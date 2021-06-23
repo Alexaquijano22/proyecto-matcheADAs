@@ -2,31 +2,31 @@ const container = document.getElementById("container");
 const btnLevel = document.getElementsByClassName(".btn-level");
 
 /**
- * Filas - Horizontales
- * Columnas - Verticales
+ * ROWS - Horizontales
+ * COLUMNS - Verticales
  * Facil 9x9 56px
  * Medio 8x8 63px
  * Dificil 7x7 72px
  */
 
-const FILAS = 7;
-const COLUMNAS = 7;
-const ANCHO_MATRIZ = 500;
-const TAMANIO_CELDA = ANCHO_MATRIZ / FILAS;
-container.style.width = `${ANCHO_MATRIZ}px`;
+const ROWS = 7;
+const COLUMNS = 7;
+const WIDTH_GRID = 500;
+const CELL_SIZE = WIDTH_GRID / ROWS;
+container.style.width = `${WIDTH_GRID}px`;
 
-const createElement = (columna, fila) => {
+const createElement = (column, row) => {
   const div = document.createElement("div");
-  div.style.width = `${TAMANIO_CELDA}px`;
-  div.style.height = `${TAMANIO_CELDA}px`;
-  div.setAttribute("data-y", columna);
-  div.setAttribute("data-x", fila);
-  div.innerText = `${columna}, ${fila}`
+  div.style.width = `${CELL_SIZE}px`;
+  div.style.height = `${CELL_SIZE}px`;
+  div.setAttribute("data-y", column);
+  div.setAttribute("data-x", row);
+  div.innerText = `${column}, ${row}`
   return div;
 };
 
-for (let y = 1; y <= COLUMNAS; y++) {
-  for (let x = 1; x <= FILAS; x++) {
+for (let y = 1; y <= COLUMNS; y++) {
+  for (let x = 1; x <= ROWS; x++) {
     const div = createElement(y, x);
     container.appendChild(div);
     console.log(y, x);
