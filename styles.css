@@ -1,0 +1,6 @@
+.container{
+    background-color: aqua;
+    /* position: relative; */
+    display: flex;
+    flex-wrap: wrap;
+}
