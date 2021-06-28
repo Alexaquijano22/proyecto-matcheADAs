@@ -26,7 +26,9 @@ const createElement = (column, row) => {
   div.setAttribute("data-x", row);
   let random = Math.floor(Math.random() * arrayElements.length);
   let span = document.createElement("span");
-  let texto = document.createTextNode(arrayElements[random]);
+  const icon = arrayElements[random]
+  let texto = document.createTextNode(icon);
+  div.setAttribute('data-icon', icon);
   span.appendChild(texto);
   div.appendChild(span);
   return div;
