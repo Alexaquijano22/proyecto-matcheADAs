@@ -17,6 +17,7 @@ container.style.width = `${WIDTH_GRID}px`;
 
 const arrayElements = ["🍎", "🍋", "🍇", "🍉", "🍌", "🍒"];
 let element = [];
+let gridElements = []
 
 const createElement = (column, row) => {
   const div = document.createElement("div");
@@ -31,8 +32,21 @@ const createElement = (column, row) => {
   div.setAttribute('data-icon', icon);
   span.appendChild(texto);
   div.appendChild(span);
+  createGrid (div)
   return div;
 };
+
+const createGrid = (div) => {
+  const dataIcon = div.getAttribute('data-icon');
+  
+    // for (let i=0; i<ROWS; i++){
+    //   console.log(dataIcon)
+    //   // gridElements.push(dataIcon)
+      
+    // }
+    // console.log(gridElements)
+
+}
 
 const switchElements = (e) => {
   const selectedElement = e.target;
@@ -66,7 +80,67 @@ const switchElements = (e) => {
 for (let y = 1; y <= COLUMNS; y++) {
   for (let x = 1; x <= ROWS; x++) {
     const div = createElement(y, x);
+    if (!(ROWS===div.getAttribute("data-x"))){
+      gridElements.push([div.getAttribute('data-icon')])
+      
+    }
     container.appendChild(div);
     div.addEventListener("click", switchElements);
   }
 }
+console.log(gridElements)
+
+
+
+
+
+
+// const tieneBloqueVertical = (matriz) => {
+
+//   const itemsPorArray = matriz[0].length; // 4 = a columnas
+
+//   let rta = false;
+
+//   for(let j = 0; j < itemsPorArray; j++) {
+
+//       for(let i = 0; i < matriz.length; i++) {
+          
+//           if( (i < matriz.length - 2) && 
+//               matriz[i][j] === matriz[i + 1][j] && 
+//               matriz[i][j] === matriz[i + 2][j]) {
+
+//                   const dato = matriz[i][j];
+
+//                   for(let w = i; w < matriz.length; w++) {
+//                       if(matriz[w][j] === dato) {
+//                           matriz[w][j] = 0;
+//                       } else {
+//                           break;
+//                       }
+
+//                   }
+
+//                   rta = true;
+//           }
+
+//       }
+
+//   }
+
+//   console.log(matriz);
+
+//   return rta;
+
+// }
+
+
+// console.log(tieneBloqueVertical([ 
+//     [4, 2, 3], 
+//     [1, 5, 3], 
+//     [1, 2, 3], 
+//     [3, 2, 5], 
+//     [3, 2, 5], 
+//     [3, 2, 5], 
+//     [3, 2, 5], 
+//     [3, 2, 5], 
+// ]))
