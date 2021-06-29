@@ -32,21 +32,9 @@ const createElement = (column, row) => {
   div.setAttribute('data-icon', icon);
   span.appendChild(texto);
   div.appendChild(span);
-  createGrid (div)
   return div;
 };
 
-const createGrid = (div) => {
-  const dataIcon = div.getAttribute('data-icon');
-  
-    // for (let i=0; i<ROWS; i++){
-    //   console.log(dataIcon)
-    //   // gridElements.push(dataIcon)
-      
-    // }
-    // console.log(gridElements)
-
-}
 
 const switchElements = (e) => {
   const selectedElement = e.target;
@@ -78,15 +66,14 @@ const switchElements = (e) => {
 };
 
 for (let y = 1; y <= COLUMNS; y++) {
+  const aux = [];
   for (let x = 1; x <= ROWS; x++) {
     const div = createElement(y, x);
-    if (!(ROWS===div.getAttribute("data-x"))){
-      gridElements.push([div.getAttribute('data-icon')])
-      
-    }
+    aux.push(div.getAttribute('data-icon'))
     container.appendChild(div);
     div.addEventListener("click", switchElements);
   }
+  gridElements.push(aux)
 }
 console.log(gridElements)
 
