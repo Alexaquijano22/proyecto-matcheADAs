@@ -43,8 +43,7 @@ const updateGrid = (firstSelected, secondSelected) => {
     secondSelected.getAttribute("data-x")
   ] = secondSelected.getAttribute("data-icon");
 
-  matchRows(gridElements)
-  matchColumns(gridElements)
+  matchElements(gridElements)
 
 };
 
@@ -97,124 +96,55 @@ for (let y = 0; y < COLUMNS; y++) {
   }
   gridElements.push(aux);
 }
-//******MATCH COLUMNS******/
 
-const matchColumns = (grid) =>{
+//******MATCH ELEMENTS******/
 
-  const arrayItems = grid[0].length; // 4 = a columnas
+const matchElements = (grid) => {
 
-  let rta = false;
-
-  for(let j = 0; j < arrayItems; j++) {
-    
-      for(let i = 0; i < grid.length; i++) {
-
-          if( (i < grid.length - 2) &&
-              grid[i][j] === grid[i + 1][j] &&
-              grid[i][j] === grid[i + 2][j]) {
-
-                  const dato = grid[i][j];
-                  
-                  for(let w = i; w < grid.length; w++) {
-                      if(grid[w][j] === dato) {
-                          grid[w][j] = 0;
-                      } else {
-                          break;
-                      }
-
-                  }
-
-                  rta = true;
-          }
-
-      }
-
-  }
-
-  console.log(grid);
-
-  return rta;
-
-}
-
-//******MATCH ROWS******/
-
-const matchRows = (grid) => {
-    
-  for(let i = 0; i < grid.length; i++) {
-    for(let j = 0; j < grid[0].length; j++){
-      // console.log(grid[i][j])
-      if((j < grid.length -2) && (grid[i][j]===grid[i][j+1] && grid[i][j]===grid[i][j+2])){
-        let dato =  grid[i][j];
-        for(let w = j; w < grid.length; w++) {
-          if(grid[i][w] === dato) {
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < grid[0].length; j++) {
+      //ROWS
+      if ((j < grid.length - 2) && grid[i][j] === grid[i][j + 1] && grid[i][j] === grid[i][j + 2]) {
+        
+        const dato = grid[i][j];
+        
+        for (let w = j; w < grid.length; w++) {
+          if (grid[i][w] === dato) {
             grid[i][w] = 0;
           } else {
             break;
           }
-          
         }
+      }
+      //COLUMNS
+      if ((j < grid.length - 2) && grid[j][i] === grid[j + 1][i] && grid[j][i] === grid[j + 2][i]) {
         
+        const dato = grid[j][i];
+        
+        for (let w = j; w < grid.length; w++) {
+          if (grid[w][i] === dato) {
+            grid[w][i] = 0;
+          } else {
+            break;
+          }
+        }
       }
     }
     
-  }    
+  }
   console.log(grid)
-
-}
   
-   
-// console.log(tieneBloqueHorizontal([
-//   [1, 2, 3, 4],
-//   [1, 2, 2, 2],
-//   [1, 2, 4, 5],
-// ])) 
+}
+// console.log((j < grid.length -2) && grid[i][j]===(grid[i][j-1] && grid[i][j-2]) && grid[i][j]=== ((grid[i-1][j] && grid[i-2][j]) || (grid[i+1][j] && grid[i+2][j])));
+// if(){
+//   console.log("entre")
 
-// const tieneBloqueVertical = (matriz) => {
-
-//   const itemsPorArray = matriz[0].length; // 4 = a columnas
-
-//   let rta = false;
-
-//   for(let j = 0; j < itemsPorArray; j++) {
-
-//       for(let i = 0; i < matriz.length; i++) {
-
-//           if( (i < matriz.length - 2) &&
-//               matriz[i][j] === matriz[i + 1][j] &&
-//               matriz[i][j] === matriz[i + 2][j]) {
-
-//                   const dato = matriz[i][j];
-
-//                   for(let w = i; w < matriz.length; w++) {
-//                       if(matriz[w][j] === dato) {
-//                           matriz[w][j] = 0;
-//                       } else {
-//                           break;
-//                       }
-
-//                   }
-
-//                   rta = true;
-//           }
-
-//       }
-
-//   }
-
-//   console.log(matriz);
-
-//   return rta;
+// }
+// else if((grid[i][j+1] && grid[i][j+2]) && grid[i][j]=== ((grid[i-1][j] && grid[i-2][j]) || (grid[i+1][j] && grid[i+2][j]))){
+//   console.log("entre2")
 
 // }
 
-// console.log(tieneBloqueVertical([
-//     [4, 2, 3],
-//     [1, 5, 3],
-//     [1, 2, 3],
-//     [3, 2, 5],
-//     [3, 2, 5],
-//     [3, 2, 5],
-//     [3, 2, 5],
-//     [3, 2, 5],
-// ]))
+// if ((j < grid.length - 2) && (grid[i][j] === grid[i - 1][j] && grid[i][j] === grid[i - 2][j])){
+//   console.log("entre");
+// }
