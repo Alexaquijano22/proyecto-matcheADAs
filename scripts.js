@@ -42,6 +42,10 @@ const updateGrid = (firstSelected, secondSelected) => {
   gridElements[secondSelected.getAttribute("data-y")][
     secondSelected.getAttribute("data-x")
   ] = secondSelected.getAttribute("data-icon");
+
+  matchRows(gridElements)
+  matchColumns(gridElements)
+
 };
 
 const switchElements = (e) => {
@@ -93,6 +97,78 @@ for (let y = 0; y < COLUMNS; y++) {
   }
   gridElements.push(aux);
 }
+//******MATCH COLUMNS******/
+
+const matchColumns = (grid) =>{
+
+  const arrayItems = grid[0].length; // 4 = a columnas
+
+  let rta = false;
+
+  for(let j = 0; j < arrayItems; j++) {
+    
+      for(let i = 0; i < grid.length; i++) {
+
+          if( (i < grid.length - 2) &&
+              grid[i][j] === grid[i + 1][j] &&
+              grid[i][j] === grid[i + 2][j]) {
+
+                  const dato = grid[i][j];
+                  
+                  for(let w = i; w < grid.length; w++) {
+                      if(grid[w][j] === dato) {
+                          grid[w][j] = 0;
+                      } else {
+                          break;
+                      }
+
+                  }
+
+                  rta = true;
+          }
+
+      }
+
+  }
+
+  console.log(grid);
+
+  return rta;
+
+}
+
+//******MATCH ROWS******/
+
+const matchRows = (grid) => {
+    
+  for(let i = 0; i < grid.length; i++) {
+    for(let j = 0; j < grid[0].length; j++){
+      // console.log(grid[i][j])
+      if((j < grid.length -2) && (grid[i][j]===grid[i][j+1] && grid[i][j]===grid[i][j+2])){
+        let dato =  grid[i][j];
+        for(let w = j; w < grid.length; w++) {
+          if(grid[i][w] === dato) {
+            grid[i][w] = 0;
+          } else {
+            break;
+          }
+          
+        }
+        
+      }
+    }
+    
+  }    
+  console.log(grid)
+
+}
+  
+   
+// console.log(tieneBloqueHorizontal([
+//   [1, 2, 3, 4],
+//   [1, 2, 2, 2],
+//   [1, 2, 4, 5],
+// ])) 
 
 // const tieneBloqueVertical = (matriz) => {
 
