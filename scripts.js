@@ -1,5 +1,5 @@
 const container = document.getElementById("container");
-const btnLevel = document.getElementsByClassName(".btn-level");
+const btnLevel = document.getElementsByClassName("btn-level");
 
 /**
  * ROWS - Horizontales
@@ -9,17 +9,49 @@ const btnLevel = document.getElementsByClassName(".btn-level");
  * Dificil 7x7 72px
  */
 
-const ROWS = 7;
-const COLUMNS = 7;
+let ROWS = 7;
+let COLUMNS = 7;
 const WIDTH_GRID = 500;
-const CELL_SIZE = WIDTH_GRID / ROWS - 2;
-container.style.width = `${WIDTH_GRID}px`;
+
 
 const arrayElements = ["🍎", "🍋", "🍇", "🍉", "🍌", "🍒"];
 let element = [];
 let gridElements = [];
 
-const createElement = (column, row) => {
+const changeLevel = (e) => {
+  const button = e.target;
+  const option = button.getAttribute('data-lvl');
+  console.log(option);
+
+  switch(option){
+    case "easy":
+      ROWS = 9;
+      COLUMNS = 9;
+      createGrid();
+    break;
+    case "normal":
+      ROWS = 8;
+      COLUMNS = 8;
+      createGrid();
+    break;
+    case "hard":
+      ROWS = 7;
+      COLUMNS = 7;
+      createGrid();
+    break;
+    default:
+      ROWS = 8;
+      COLUMNS = 8;
+  }
+}
+
+console.log(ROWS);
+
+for(let i =0; i< btnLevel.length; i++){
+  btnLevel[i].addEventListener('click', changeLevel)
+}
+
+const createElement = (column, row, CELL_SIZE) => {
   const div = document.createElement("div");
   div.style.width = `${CELL_SIZE}px`;
   div.style.height = `${CELL_SIZE}px`;
@@ -86,15 +118,19 @@ const switchElements = (e) => {
   }
 };
 
-for (let y = 0; y < COLUMNS; y++) {
-  const aux = [];
-  for (let x = 0; x < ROWS; x++) {
-    const div = createElement(y, x);
-    container.appendChild(div);
-    div.addEventListener("click", switchElements);
-    aux.push(div.getAttribute("data-icon"));
+const createGrid = () => {
+  const CELL_SIZE = WIDTH_GRID / ROWS -2;
+  container.style.width = `${WIDTH_GRID}px`;
+  for (let y = 0; y < COLUMNS; y++) {
+    const aux = [];
+    for (let x = 0; x < ROWS; x++) {
+      const div = createElement(y, x, CELL_SIZE);
+      container.appendChild(div);
+      div.addEventListener("click", switchElements);
+      aux.push(div.getAttribute("data-icon"));
+    }
+    gridElements.push(aux);
   }
-  gridElements.push(aux);
 }
 
 //******MATCH ELEMENTS******/
@@ -135,6 +171,12 @@ const matchElements = (grid) => {
   console.log(grid)
   
 }
+
+
+
+
+
+
 // console.log((j < grid.length -2) && grid[i][j]===(grid[i][j-1] && grid[i][j-2]) && grid[i][j]=== ((grid[i-1][j] && grid[i-2][j]) || (grid[i+1][j] && grid[i+2][j])));
 // if(){
 //   console.log("entre")
