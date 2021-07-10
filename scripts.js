@@ -43,46 +43,54 @@ const changeLevel = (e) => {
 for (let i = 0; i < btnLevel.length; i++) {
   btnLevel[i].addEventListener("click", changeLevel);
 }
-
 const updateColumns = () => {
-  for (let fila = gridElements.length - 1; fila >= 0; fila--) {
-    for (let columna = gridElements.length - 1; columna >= 0; columna--) {
-      if (gridElements[columna][fila] === "") {
-        for (let i = columna; i > 0; i--) {
-          console.log(i,fila);
-          // console.log(columna,fila);
-          if (gridElements[columna][i] !== "") {
-            switchElements(gridElements[columna][i], gridElements[columna][fila], 'llenar')
+  for (let columna = gridElements.length - 1; columna >= 0; columna--) {
+    for (let fila = gridElements.length - 1; fila >= 0; fila--) {
+        if (gridElements[fila][columna] === "") {
+          for (let i = fila - 1; i >= 0; i--) {
+            if (gridElements[i][columna] !== "") {
+              switchElements(fila, columna, i, columna);
+                matchElements();
+                renderGrid();
+              break;
+            }
           }
         }
       }
-    }
   }
 };
 
-const deleteElements = (elementsToDelete) => {
-  for (let i = 0; i < elementsToDelete.length; i++) {
-    gridElements[elementsToDelete[i][0]][elementsToDelete[i][1]] = "";
+const deleteElements = (elements) => {
+  for (let i = 0; i < elements.length; i++) {
+    gridElements[elements[i][0]][elements[i][1]] = "";
   }
-  renderGrid();
+  if(elementsToDelete.length === 0){
+    if(element.length === 2){
+      setTimeout(() => {
+        switchElements(element[0][1], element[0][2], element[1][1], element[1][2]);
+      })
+    }
+  }
+  elementsToDelete = [];
   updateColumns();
 };
 
 //******MATCH ELEMENTS******/
-const matchElements = (grid) => {
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < grid[0].length; j++) {
+const matchElements = () => {
+  for (let i = 0; i < gridElements.length; i++) {
+    for (let j = 0; j < gridElements[0].length; j++) {
       //ROWS
       if (
-        j < grid.length - 2 &&
-        grid[i][j] === grid[i][j + 1] &&
-        grid[i][j] === grid[i][j + 2]
+        j < gridElements.length - 2 &&
+        gridElements[i][j] !== '' &&
+        gridElements[i][j] === gridElements[i][j + 1] &&
+        gridElements[i][j] === gridElements[i][j + 2]
       ) {
-        const dato = grid[i][j];
+        const dato = gridElements[i][j];
 
-        for (let w = j; w < grid.length; w++) {
-          if (grid[i][w] === dato) {
-            elementsToDelete.push([i, w, grid[i][j]]);
+        for (let w = j; w < gridElements.length; w++) {
+          if (gridElements[i][w] === dato) {
+            elementsToDelete.push([i, w, gridElements[i][j]]);
           } else {
             break;
           }
@@ -90,15 +98,16 @@ const matchElements = (grid) => {
       }
       //COLUMNS
       if (
-        j < grid.length - 2 &&
-        grid[j][i] === grid[j + 1][i] &&
-        grid[j][i] === grid[j + 2][i]
+        j < gridElements.length - 2 &&
+        gridElements[j][i] !== '' &&
+        gridElements[j][i] === gridElements[j + 1][i] &&
+        gridElements[j][i] === gridElements[j + 2][i]
       ) {
-        const dato = grid[j][i];
+        const dato = gridElements[j][i];
 
-        for (let w = j; w < grid.length; w++) {
-          if (grid[w][i] === dato) {
-            elementsToDelete.push([w, i, grid[j][i]]);
+        for (let w = j; w < gridElements.length; w++) {
+          if (gridElements[w][i] === dato) {
+            elementsToDelete.push([w, i, gridElements[j][i]]);
           } else {
             break;
           }
@@ -106,19 +115,14 @@ const matchElements = (grid) => {
       }
     }
   }
+  
   deleteElements(elementsToDelete);
 };
 
-const switchElements = (fruit1, fruit2, action) => {
-
-
-  let aux = fruit1;
-  gridElements[element[0][1]][element[0][2]] = fruit2;
-  gridElements[element[1][1]][element[1][2]] = aux;
-
-  renderGrid();
-  matchElements(gridElements);
-  
+const switchElements = (column1, row1, column2, row2) => {
+  let aux = gridElements[column1][row1];
+  gridElements[column1][row1] = gridElements[column2][row2];
+  gridElements[column2][row2] = aux;
   element = [];
 };
 
@@ -130,14 +134,12 @@ const clickFruit = (column, row, fruit) => {
       let differenceX = element[0][1] - element[1][1];
       let differenceY = element[0][2] - element[1][2];
       if (
-        (-1 <= differenceX <= 1 && differenceY === 0) ||
-        (differenceX === 0 && -1 <= differenceY <= 1)
+        (-1 <= differenceX && differenceX <= 1 && differenceY === 0) ||
+        (differenceX === 0 && -1 <= differenceY && differenceY <= 1)
       ) {
-        switchElements(
-          gridElements[element[0][1]][element[0][2]],
-          gridElements[element[1][1]][element[1][2]]
-        );
-      } else {
+        switchElements(element[0][1], element[0][2], element[1][1], element[1][2]);
+        matchElements();
+       } else {
         element.shift();
       }
     } else {
@@ -166,13 +168,18 @@ const renderGrid = () => {
   container.style.width = `${WIDTH_GRID}px`;
   for (let y = 0; y < gridElements.length; y++) {
     for (let x = 0; x < gridElements.length; x++) {
+      if(gridElements[y][x] === ''){
+        let random = Math.floor(Math.random() * arrayElements.length);
+        gridElements[y][x] = arrayElements[random];
+      }
       const div = createElement(y, x, gridElements[y][x], CELL_SIZE);
       container.appendChild(div);
       div.addEventListener("click", () => {
         clickFruit(y, x, gridElements[y][x]);
       });
     }
-  }
+  };
+  matchElements();
 };
 
 const fillArray = () => {
