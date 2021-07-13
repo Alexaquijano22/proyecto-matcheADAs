@@ -44,15 +44,21 @@ for (let i = 0; i < btnLevel.length; i++) {
   btnLevel[i].addEventListener("click", changeLevel);
 }
 const updateColumns = () => {
+  console.log(gridElements);
   for (let columna = gridElements.length - 1; columna >= 0; columna--) {
     for (let fila = gridElements.length - 1; fila >= 0; fila--) {
         if (gridElements[fila][columna] === "") {
-          for (let i = fila - 1; i >= 0; i--) {
-            if (gridElements[i][columna] !== "") {
-              switchElements(fila, columna, i, columna);
+          console.log(`fila: ${fila}, columna: ${columna}`);
+          if((fila - 1) < 0 ){
+            renderGrid();
+          }else{
+            for (let i = fila - 1; i >= 0; i--) {
+              if (gridElements[i][columna] !== "") {
+                switchElements(fila, columna, i, columna);
                 matchElements();
-                renderGrid();
-              break;
+                
+                break;
+              }
             }
           }
         }
@@ -64,13 +70,13 @@ const deleteElements = (elements) => {
   for (let i = 0; i < elements.length; i++) {
     gridElements[elements[i][0]][elements[i][1]] = "";
   }
-  if(elementsToDelete.length === 0){
-    if(element.length === 2){
-      setTimeout(() => {
-        switchElements(element[0][1], element[0][2], element[1][1], element[1][2]);
-      })
-    }
-  }
+  // if(elementsToDelete.length === 0){
+  //   if(element.length === 2){
+  //     setTimeout(() => {
+  //       switchElements(element[0][1], element[0][2], element[1][1], element[1][2]);
+  //     })
+  //   }
+  // }
   elementsToDelete = [];
   updateColumns();
 };
@@ -115,7 +121,6 @@ const matchElements = () => {
       }
     }
   }
-  
   deleteElements(elementsToDelete);
 };
 
