@@ -1,5 +1,6 @@
 const container = document.getElementById("container");
 const btnLevel = document.getElementsByClassName("btn-level");
+const time = document.getElementById("time"); 
 
 /**
  * ROWS - Horizontales
@@ -16,7 +17,31 @@ const arrayElements = ["🍎", "🍋", "🍇", "🍉", "🍌", "🍒"];
 let element = [];
 let gridElements = [];
 let elementsToDelete = [];
+let interval; 
 
+//TIMER
+let sec = 30;
+
+const sign = () =>{
+    const span = document.createElement("span");
+    let texto = document.createTextNode("Juego terminado");
+    time.appendChild(span)
+    span.appendChild(texto)
+}
+
+const counter  = () =>{
+  time.innerHTML = (`00: ${sec--}`);
+  if(sec === -1){
+    clearInterval(interval);    
+    time.innerHTML = ""
+  }  
+}
+const timer = () => {
+  interval = setInterval(counter, 1000);
+  setTimeout (sign, 1000 * 31);
+}
+
+//BUTTONS
 const changeLevel = (e) => {
   const button = e.target;
   const option = button.getAttribute("data-lvl");
@@ -41,14 +66,18 @@ const changeLevel = (e) => {
 };
 
 for (let i = 0; i < btnLevel.length; i++) {
-  btnLevel[i].addEventListener("click", changeLevel);
+  btnLevel[i].addEventListener("click", (e) => {
+    changeLevel(e)
+    timer()
+  }
+  );
 }
 const updateColumns = () => {
-  console.log(gridElements);
+  // console.log(gridElements);
   for (let columna = gridElements.length - 1; columna >= 0; columna--) {
     for (let fila = gridElements.length - 1; fila >= 0; fila--) {
         if (gridElements[fila][columna] === "") {
-          console.log(`fila: ${fila}, columna: ${columna}`);
+          // console.log(`fila: ${fila}, columna: ${columna}`);
           if((fila - 1) < 0 ){
             renderGrid();
           }else{
@@ -200,3 +229,5 @@ const fillArray = () => {
   }
   renderGrid();
 };
+
+
