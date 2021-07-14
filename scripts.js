@@ -3,6 +3,8 @@ const btnLevel = document.getElementsByClassName("btn-level");
 const time = document.getElementById("time");
 const info = document.getElementById("infoIcon")
 const redo = document.getElementById("reDoIcon")
+const points = document.getElementById('points');
+const combo = document.getElementById('combo');
 
 /**
  * ROWS - Horizontales
@@ -20,6 +22,9 @@ let element = [];
 let gridElements = [];
 let elementsToDelete = [];
 let interval;
+let arrayPoints = [];
+let arrayCombos = [];
+
 
 //TIMER
 let sec = 30;
@@ -71,8 +76,11 @@ for (let i = 0; i < btnLevel.length; i++) {
   btnLevel[i].addEventListener("click", (e) => {
     changeLevel(e)
     timer()
-  }
-  );
+    arrayPoints = [];
+    points.innerText = `Puntaje: 0`;
+    arrayCombos = [];
+    combo.innerText = `Combo: x1`
+  });
 }
 //CONTROLS
 info.addEventListener("click", (e) =>{
@@ -82,8 +90,16 @@ redo.addEventListener("click", (e) =>{
   console.log("ENTRE REDO")
 })
 
-
-
+//PUNTAJES
+const countScore = () => {
+  if(elementsToDelete.length > 0){
+    for(let i = 0; i < elementsToDelete.length; i++){
+      arrayPoints.push(elementsToDelete[i]);
+      points.innerText = `Puntos: ${(arrayPoints.length * 200)}`
+    }
+  }
+  combo.innerText = `Combo: x${(arrayCombos.length)}`
+}
 
 const updateColumns = () => {
   for (let columna = gridElements.length - 1; columna >= 0; columna--) {
@@ -110,6 +126,7 @@ const deleteElements = (elements) => {
   for (let i = 0; i < elements.length; i++) {
     gridElements[elements[i][0]][elements[i][1]] = "";
   }
+  countScore();
   elementsToDelete = [];
   updateColumns();
 };
@@ -126,10 +143,11 @@ const matchElements = () => {
         gridElements[i][j] === gridElements[i][j + 2]
       ) {
         const dato = gridElements[i][j];
-
+        arrayCombos.push(dato);
         for (let w = j; w < gridElements.length; w++) {
           if (gridElements[i][w] === dato) {
             elementsToDelete.push([i, w, gridElements[i][j]]);
+
           } else {
             break;
           }
@@ -143,7 +161,7 @@ const matchElements = () => {
         gridElements[j][i] === gridElements[j + 2][i]
       ) {
         const dato = gridElements[j][i];
-
+        arrayCombos.push(dato);
         for (let w = j; w < gridElements.length; w++) {
           if (gridElements[w][i] === dato) {
             elementsToDelete.push([w, i, gridElements[j][i]]);
@@ -218,6 +236,9 @@ const renderGrid = () => {
     }
   };
   matchElements();
+  setTimeout(() => {
+  combo.innerText = `Combo: x1`
+  }, 2000)
 };
 
 const fillArray = () => {
