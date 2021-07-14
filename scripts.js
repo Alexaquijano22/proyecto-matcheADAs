@@ -1,6 +1,6 @@
 const container = document.getElementById("container");
 const btnLevel = document.getElementsByClassName("btn-level");
-const time = document.getElementById("time"); 
+const time = document.getElementById("time");
 
 /**
  * ROWS - Horizontales
@@ -17,28 +17,28 @@ const arrayElements = ["🍎", "🍋", "🍇", "🍉", "🍌", "🍒"];
 let element = [];
 let gridElements = [];
 let elementsToDelete = [];
-let interval; 
+let interval;
 
 //TIMER
 let sec = 30;
 
-const sign = () =>{
-    const span = document.createElement("span");
-    let texto = document.createTextNode("Juego terminado");
-    time.appendChild(span)
-    span.appendChild(texto)
+const sign = () => {
+  const span = document.createElement("span");
+  let texto = document.createTextNode("Juego terminado");
+  time.appendChild(span)
+  span.appendChild(texto)
 }
 
-const counter  = () =>{
+const counter = () => {
   time.innerHTML = (`00: ${sec--}`);
-  if(sec === -1){
-    clearInterval(interval);    
+  if (sec === -1) {
+    clearInterval(interval);
     time.innerHTML = ""
-  }  
+  }
 }
 const timer = () => {
   interval = setInterval(counter, 1000);
-  setTimeout (sign, 1000 * 31);
+  setTimeout(sign, 1000 * 31);
 }
 
 //BUTTONS
@@ -73,25 +73,23 @@ for (let i = 0; i < btnLevel.length; i++) {
   );
 }
 const updateColumns = () => {
-  // console.log(gridElements);
   for (let columna = gridElements.length - 1; columna >= 0; columna--) {
     for (let fila = gridElements.length - 1; fila >= 0; fila--) {
-        if (gridElements[fila][columna] === "") {
-          // console.log(`fila: ${fila}, columna: ${columna}`);
-          if((fila - 1) < 0 ){
-            renderGrid();
-          }else{
-            for (let i = fila - 1; i >= 0; i--) {
-              if (gridElements[i][columna] !== "") {
-                switchElements(fila, columna, i, columna);
-                matchElements();
-                
-                break;
-              }
+      if (gridElements[fila][columna] === "") {
+        if ((fila - 1) < 0) {
+          renderGrid();
+        } else {
+          for (let i = fila - 1; i >= 0; i--) {
+            if (gridElements[i][columna] !== "") {
+              switchElements(fila, columna, i, columna);
+              matchElements();
+
+              break;
             }
           }
         }
       }
+    }
   }
 };
 
@@ -99,13 +97,6 @@ const deleteElements = (elements) => {
   for (let i = 0; i < elements.length; i++) {
     gridElements[elements[i][0]][elements[i][1]] = "";
   }
-  // if(elementsToDelete.length === 0){
-  //   if(element.length === 2){
-  //     setTimeout(() => {
-  //       switchElements(element[0][1], element[0][2], element[1][1], element[1][2]);
-  //     })
-  //   }
-  // }
   elementsToDelete = [];
   updateColumns();
 };
@@ -173,7 +164,7 @@ const clickFruit = (column, row, fruit) => {
       ) {
         switchElements(element[0][1], element[0][2], element[1][1], element[1][2]);
         matchElements();
-       } else {
+      } else {
         element.shift();
       }
     } else {
@@ -202,7 +193,7 @@ const renderGrid = () => {
   container.style.width = `${WIDTH_GRID}px`;
   for (let y = 0; y < gridElements.length; y++) {
     for (let x = 0; x < gridElements.length; x++) {
-      if(gridElements[y][x] === ''){
+      if (gridElements[y][x] === '') {
         let random = Math.floor(Math.random() * arrayElements.length);
         gridElements[y][x] = arrayElements[random];
       }
