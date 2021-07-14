@@ -1,6 +1,8 @@
 const container = document.getElementById("container");
 const btnLevel = document.getElementsByClassName("btn-level");
 const time = document.getElementById("time");
+const info = document.getElementById("infoIcon")
+const redo = document.getElementById("reDoIcon")
 
 /**
  * ROWS - Horizontales
@@ -72,6 +74,17 @@ for (let i = 0; i < btnLevel.length; i++) {
   }
   );
 }
+//CONTROLS
+info.addEventListener("click", (e) =>{
+  console.log("ENTRE INFO")
+})
+redo.addEventListener("click", (e) =>{
+  console.log("ENTRE REDO")
+})
+
+
+
+
 const updateColumns = () => {
   for (let columna = gridElements.length - 1; columna >= 0; columna--) {
     for (let fila = gridElements.length - 1; fila >= 0; fila--) {
