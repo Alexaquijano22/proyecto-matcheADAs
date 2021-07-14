@@ -27,7 +27,7 @@ let arrayCombos = [];
 
 
 //TIMER
-let sec = 30;
+let sec = 30
 
 const sign = () => {
   const span = document.createElement("span");
@@ -35,17 +35,19 @@ const sign = () => {
   time.appendChild(span)
   span.appendChild(texto)
 }
-
 const counter = () => {
   time.innerHTML = (`00: ${sec--}`);
-  if (sec === -1) {
+  if (sec <= -1) {
     clearInterval(interval);
     time.innerHTML = ""
+    sign()
   }
+  
 }
 const timer = () => {
+  sec = 30
   interval = setInterval(counter, 1000);
-  setTimeout(sign, 1000 * 31);
+  
 }
 
 //BUTTONS
@@ -72,6 +74,7 @@ const changeLevel = (e) => {
   }
 };
 
+//EVENTO BOTONES
 for (let i = 0; i < btnLevel.length; i++) {
   btnLevel[i].addEventListener("click", (e) => {
     changeLevel(e)
@@ -79,7 +82,7 @@ for (let i = 0; i < btnLevel.length; i++) {
     arrayPoints = [];
     points.innerText = `Puntaje: 0`;
     arrayCombos = [];
-    combo.innerText = `Combo: x1`
+    combo.innerText = `Combo x1`
   });
 }
 //CONTROLS
@@ -96,11 +99,13 @@ const countScore = () => {
     for(let i = 0; i < elementsToDelete.length; i++){
       arrayPoints.push(elementsToDelete[i]);
       points.innerText = `Puntos: ${(arrayPoints.length * 200)}`
+      combo.innerText = `Combo x${(arrayCombos.length)}`
     }
+    arrayCombos = []
   }
-  combo.innerText = `Combo: x${(arrayCombos.length)}`
 }
 
+//UPDATE COLUMNS
 const updateColumns = () => {
   for (let columna = gridElements.length - 1; columna >= 0; columna--) {
     for (let fila = gridElements.length - 1; fila >= 0; fila--) {
@@ -112,7 +117,6 @@ const updateColumns = () => {
             if (gridElements[i][columna] !== "") {
               switchElements(fila, columna, i, columna);
               matchElements();
-
               break;
             }
           }
@@ -122,14 +126,16 @@ const updateColumns = () => {
   }
 };
 
+//DELETE ELEMENTS
 const deleteElements = (elements) => {
   for (let i = 0; i < elements.length; i++) {
-    gridElements[elements[i][0]][elements[i][1]] = "";
+    gridElements[elements[i][0]][elements[i][1]] = "";  
   }
   countScore();
-  elementsToDelete = [];
-  updateColumns();
+  elementsToDelete = [];  
+  updateColumns();  
 };
+
 
 //******MATCH ELEMENTS******/
 const matchElements = () => {
@@ -172,9 +178,12 @@ const matchElements = () => {
       }
     }
   }
-  deleteElements(elementsToDelete);
+  // setTimeout(() => {
+    deleteElements(elementsToDelete);
+  // }, 2000)
 };
 
+//SWITCH ELEMENTS
 const switchElements = (column1, row1, column2, row2) => {
   let aux = gridElements[column1][row1];
   gridElements[column1][row1] = gridElements[column2][row2];
@@ -182,6 +191,7 @@ const switchElements = (column1, row1, column2, row2) => {
   element = [];
 };
 
+//CLICK FRUIT
 const clickFruit = (column, row, fruit) => {
   element.push([fruit, column, row]);
 
@@ -203,14 +213,18 @@ const clickFruit = (column, row, fruit) => {
     }
   }
 };
-
+//CREATE ELEMENT
 const createElement = (column, row, fruit, CELL_SIZE) => {
   const div = document.createElement("div");
   div.style.width = `${CELL_SIZE}px`;
   div.style.height = `${CELL_SIZE}px`;
+  div.style.display = 'flex';
+  div.style.justifyContent = 'center';
+  div.style.alignItems = 'center';
   div.setAttribute("data-y", column);
   div.setAttribute("data-x", row);
   let span = document.createElement("span");
+  span.style.fontSize= '25px'
   let texto = document.createTextNode(fruit);
   div.setAttribute("data-icon", fruit);
   span.appendChild(texto);
@@ -218,6 +232,7 @@ const createElement = (column, row, fruit, CELL_SIZE) => {
   return div;
 };
 
+//RENDER GRID
 const renderGrid = () => {
   container.innerHTML = "";
   const CELL_SIZE = WIDTH_GRID / ROWS - 2;
@@ -237,10 +252,10 @@ const renderGrid = () => {
   };
   matchElements();
   setTimeout(() => {
-  combo.innerText = `Combo: x1`
+  combo.innerText = `Combo x1`
   }, 2000)
 };
-
+//FILL ARRAY
 const fillArray = () => {
   gridElements = [];
   for (let y = 0; y < COLUMNS; y++) {
