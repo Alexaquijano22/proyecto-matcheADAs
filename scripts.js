@@ -64,9 +64,8 @@ const stopTimer = () => {
 }
 
 const counter = () => {
-  console.log(stopTime);
   showTime();
-  if (sec === -1) {
+  if (sec <= -1) {
     clearTimer();  
     time.innerHTML = "";
     sign();
@@ -115,7 +114,7 @@ const changeLevel = (option) => {
 const selectLevel = (value) => {
   switch (value) {
     case "level":
-      swal({
+    swal({
         title: "Nuevo Juego",
         text: "Seleccioná una dificultad",
         buttons: {
@@ -132,10 +131,12 @@ const selectLevel = (value) => {
       }).then((value) => {
         changeLevel(value);
       });
+    break;
 
-    case "cancel": 
-    console.log('cancel');
+    case "cancelar": 
+      console.log('cancelar');
       stopTime = false;
+    break
   }
 };
 
@@ -176,7 +177,7 @@ redo.addEventListener("click", (e) => {
     text: "¡Perderás todo tu puntaje acumulado!",
     buttons: {
       cancelar: {
-        value: "cancel",
+        value: "cancelar",
       },
       confirm: {
         text: "Nuevo juego",
@@ -184,7 +185,7 @@ redo.addEventListener("click", (e) => {
       },
     },
   }).then((value) => {
-    console.log(value);
+    
     selectLevel(value);
   });
   stopTimer();
