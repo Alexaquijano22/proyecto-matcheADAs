@@ -6,14 +6,14 @@ body{
     background-image: url(https://mocah.org/thumbs/514870-8-Bit-Minimalist.png);
     background-size: cover;
 }
-.title{
-    font-family: 'Press Start 2P', cursive;
-    color: #F8B4EB;
-}
 p{
     font-family: 'Press Start 2P', cursive;
     font-size:x-small;
     margin-left: 7px;
+}
+.title{
+    font-family: 'Press Start 2P', cursive;
+    color: #F8B4EB;
 }
 .container{
     background: rgb(0 0 0 / 73%);
@@ -31,9 +31,6 @@ p{
     margin: 20px 20px;
     border: 2px solid black;    
 }
-/* .buttons{
-    display: none;
-} */
 .points{
     display: flex;
 }
@@ -63,6 +60,28 @@ p{
     width: 400px;
     background-color: rgba(221,191,170, 0.95);
     text-align: center;
+}
+
+.swal-button{
+    background-color: #D0AEC5;
+    color: #19141C;
+    font-family:'Press Start 2P', cursive;
+    font-size: x-small;
+    
+    border: 1px solid #4A3F39;
+}
+.swal-button:hover {
+    background-color: #9D79AA;
+}
+.swal-title{
+    font-family: 'Press Start 2P';
+    font-size: large;
+    
+}
+.swal-text{
+    font-family: 'Barlow', sans-serif;
+    font-weight: 500;
+    
 }
 @media screen and (max-width: 600px){
     body{
@@ -97,25 +116,4 @@ p{
     font-size: small;
     margin-top: 30px;
 }
-}
-.swal-button{
-    background-color: #D0AEC5;
-    color: #19141C;
-    font-family:'Press Start 2P', cursive;
-    font-size: x-small;
-
-    border: 1px solid #4A3F39;
-}
-.swal-button:hover {
-    background-color: #9D79AA;
-}
-.swal-title{
-    font-family: 'Press Start 2P';
-    font-size: large;
-
-}
-.swal-text{
-    font-family: 'Barlow', sans-serif;
-    font-weight: 500;
-    
 }
