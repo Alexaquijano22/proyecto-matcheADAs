@@ -6,7 +6,7 @@ body{
     background-image: url(https://mocah.org/thumbs/514870-8-Bit-Minimalist.png);
     background-size: cover;
 }
-h1{
+.title{
     font-family: 'Press Start 2P', cursive;
     color: #F8B4EB;
 }
@@ -65,6 +65,12 @@ p{
     text-align: center;
 }
 @media screen and (max-width: 600px){
+    body{
+        background-size: cover;
+    };
+    .title{
+        margin-top: 30px;
+    }
     .swal-modal{
         width: 280px;
     }
@@ -80,10 +86,17 @@ p{
         width: 350px;
         margin: 20px 0px 20px 20px;
     }
-    body{
-        background-size: auto
-    };
-
+    
+}
+@media screen and (max-width: 400px){
+.control{
+    width: 320px;
+    margin: 20px 20px 20px 20px;
+}
+.title{
+    font-size: small;
+    margin-top: 30px;
+}
 }
 .swal-button{
     background-color: #D0AEC5;

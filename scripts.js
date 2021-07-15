@@ -26,21 +26,22 @@ let arrayPoints = [];
 let arrayCombos = [];
 
 //MEDIA QUERY
-const mediaQuery = window.matchMedia('(max-width: 600px)')
+const mediaQuery = window.matchMedia('(max-width: 500px)');
 if (mediaQuery.matches){
-  WIDTH_GRID = 350
+  WIDTH_GRID = 320
 }
 else{
   WIDTH_GRID = 400
 }
+
 //TIMER
 let sec = 30
 
 const sign = () => {
   const span = document.createElement("span");
   let texto = document.createTextNode("00:00");
-  time.appendChild(span)
-  span.appendChild(texto)
+  time.appendChild(span);
+  span.appendChild(texto);
   swal({
       title:"Juego terminado",
       text:`Puntaje final: ${(arrayPoints.length * 200)}`,
