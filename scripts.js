@@ -1,5 +1,5 @@
 const container = document.getElementById("container");
-const btnLevel = document.getElementsByClassName("btn-level");
+// const btnLevel = document.getElementsByClassName("btn-level");
 const time = document.getElementById("time");
 const info = document.getElementById("infoIcon")
 const redo = document.getElementById("reDoIcon")
@@ -16,7 +16,7 @@ const combo = document.getElementById('combo');
 
 let ROWS = 7;
 let COLUMNS = 7;
-const WIDTH_GRID = 500;
+const WIDTH_GRID = 400;
 const arrayElements = ["🍎", "🍋", "🍇", "🍉", "🍌", "🍒"];
 let element = [];
 let gridElements = [];
@@ -25,15 +25,28 @@ let interval;
 let arrayPoints = [];
 let arrayCombos = [];
 
-
 //TIMER
 let sec = 30
 
 const sign = () => {
   const span = document.createElement("span");
-  let texto = document.createTextNode("Juego terminado");
+  let texto = document.createTextNode("00:00");
   time.appendChild(span)
   span.appendChild(texto)
+  swal({
+      title:"Juego terminado",
+      text:`Puntaje final: ${(arrayPoints.length * 200)}`,
+      buttons:{
+        confirm: {
+          text: "Nuevo juego",
+          value: "level"}
+      }
+    })
+      .then((value) => {
+        selectLevel(value)
+      })
+
+  
 }
 const counter = () => {
   time.innerHTML = (`00: ${sec--}`);
@@ -49,48 +62,98 @@ const timer = () => {
   interval = setInterval(counter, 1000);
   
 }
+// MODALES AUTOMÁTICOS
+
 
 //BUTTONS
-const changeLevel = (e) => {
-  const button = e.target;
-  const option = button.getAttribute("data-lvl");
-
+const changeLevel = (option) => {
+  console.log(option)
   switch (option) {
     case "easy":
       ROWS = 9;
       COLUMNS = 9;
       fillArray();
+      clickActions()
       break;
     case "normal":
       ROWS = 8;
       COLUMNS = 8;
       fillArray();
+      clickActions();
       break;
     case "hard":
       ROWS = 7;
       COLUMNS = 7;
       fillArray();
+      clickActions();
       break;
   }
 };
 
-//EVENTO BOTONES
-for (let i = 0; i < btnLevel.length; i++) {
-  btnLevel[i].addEventListener("click", (e) => {
-    changeLevel(e)
-    timer()
-    arrayPoints = [];
-    points.innerText = `Puntaje: 0`;
-    arrayCombos = [];
-    combo.innerText = `Combo x1`
-  });
+const selectLevel = (value) => {
+  console.log(value)
+  switch (value) {
+  case "level": 
+      swal({ 
+        title:"Nuevo Juego",
+        text:"Seleccioná una dificultad",
+        buttons:{
+          fácil:{
+            value:"easy"
+          },
+          normal:{
+            value: "normal"
+          },
+          difícil:{
+            value:"hard"
+          },
+        }
+  })
+  .then ((value) => {
+    changeLevel(value)
+  })
+  }
 }
+  
+    
+
 //CONTROLS
 info.addEventListener("click", (e) =>{
-  console.log("ENTRE INFO")
+  swal({
+    title: "¡Bienvenida!",
+    text: `En MatcheADAs tu objetivo es juntar tres o más ítems del mismo tipo ya sea en fila o columna.
+    
+    Para eso, selecciona un ítem y a continuación un ítem adyacente para intercambiarlos de lugar. Si se forma un grupo, esos ítems se eliminarán y ganarás puntos.
+
+    ¡Seguí armando grupos de 3 o más antes de que se acabe el tiempo!`,
+    buttons:{ catch: {
+      text: "¡A jugar!",
+      value: "level"} },
+  })
+  .then((value) => {
+    selectLevel(value)
+  })
 })
+const clickActions = () => {
+  timer()
+  arrayPoints = [];
+  points.innerText = `Puntaje: 0`;
+  arrayCombos = [];
+  combo.innerText = `Combo x1`
+}
 redo.addEventListener("click", (e) =>{
-  console.log("ENTRE REDO")
+  swal({
+    title: "¿Reiniciar juego?",
+    text: "¡Perderás todo tu puntaje acumulado!",
+    buttons:{ 
+      cancel:true,
+      confirm: {
+      text: "Nuevo juego",
+      value: "level"} },
+  })
+  .then ((value) => {
+    selectLevel(value)
+  })
 })
 
 //PUNTAJES
@@ -224,7 +287,7 @@ const createElement = (column, row, fruit, CELL_SIZE) => {
   div.setAttribute("data-y", column);
   div.setAttribute("data-x", row);
   let span = document.createElement("span");
-  span.style.fontSize= '25px'
+  span.style.fontSize= '22px'
   let texto = document.createTextNode(fruit);
   div.setAttribute("data-icon", fruit);
   span.appendChild(texto);
@@ -235,7 +298,7 @@ const createElement = (column, row, fruit, CELL_SIZE) => {
 //RENDER GRID
 const renderGrid = () => {
   container.innerHTML = "";
-  const CELL_SIZE = WIDTH_GRID / ROWS - 2;
+  const CELL_SIZE = WIDTH_GRID / ROWS-2;
   container.style.width = `${WIDTH_GRID}px`;
   for (let y = 0; y < gridElements.length; y++) {
     for (let x = 0; x < gridElements.length; x++) {
@@ -247,6 +310,7 @@ const renderGrid = () => {
       container.appendChild(div);
       div.addEventListener("click", () => {
         clickFruit(y, x, gridElements[y][x]);
+        div.style.border = '1px solid black'
       });
     }
   };
