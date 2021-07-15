@@ -1,10 +1,10 @@
 const container = document.getElementById("container");
 // const btnLevel = document.getElementsByClassName("btn-level");
 const time = document.getElementById("time");
-const info = document.getElementById("infoIcon")
-const redo = document.getElementById("reDoIcon")
-const points = document.getElementById('points');
-const combo = document.getElementById('combo');
+const info = document.getElementById("infoIcon");
+const redo = document.getElementById("reDoIcon");
+const points = document.getElementById("points");
+const combo = document.getElementById("combo");
 
 /**
  * ROWS - Horizontales
@@ -26,107 +26,104 @@ let arrayPoints = [];
 let arrayCombos = [];
 
 //TIMER
-let sec = 30
+let sec;
 
 const sign = () => {
   const span = document.createElement("span");
   let texto = document.createTextNode("00:00");
-  time.appendChild(span)
-  span.appendChild(texto)
+  time.appendChild(span);
+  span.appendChild(texto);
   swal({
-      title:"Juego terminado",
-      text:`Puntaje final: ${(arrayPoints.length * 200)}`,
-      buttons:{
-        confirm: {
-          text: "Nuevo juego",
-          value: "level"}
-      }
-    })
-      .then((value) => {
-        selectLevel(value)
-      })
+    title: "Juego terminado",
+    text: `Puntaje final: ${arrayPoints.length * 200}`,
+    buttons: {
+      confirm: {
+        text: "Nuevo juego",
+        value: "level",
+      },
+    },
+  }).then((value) => {
+    selectLevel(value);
+  });
+};
+const showTime = () => {
+  if (sec < 10) {
+    time.innerHTML = `00:0${sec--}`;
+  }else{
+    time.innerHTML = `00:${sec--}`;
+  }
+};
 
-  
+const clearTimer = () => {
+  clearInterval(interval);
 }
-const showTime = () =>{
-  if (sec<10){
-    time.innerHTML = (`00:0${sec--}`);
-  }
-  else{
-    time.innerHTML = (`00:${sec--}`);
-  }
-}
+
 const counter = () => {
-  showTime()
-  if (sec <= -1) {
-    clearInterval(interval);
-    time.innerHTML = ""
-    sign()
+  showTime();
+  console.log(sec);
+  if (sec === -1) {
+    clearTimer();  
+    time.innerHTML = "";
+    sign();
   }
-  
-}
+};
 const timer = () => {
-  sec = 30
+  sec = 10;
   interval = setInterval(counter, 1000);
-  
-}
+};
+
 // MODALES AUTOMÁTICOS
-
-
 //BUTTONS
 const changeLevel = (option) => {
-  console.log(option)
   switch (option) {
     case "easy":
       ROWS = 9;
       COLUMNS = 9;
       fillArray();
-      clickActions()
+      clearTimer();
+      clickActions();
       break;
     case "normal":
       ROWS = 8;
       COLUMNS = 8;
       fillArray();
+      clearTimer();
       clickActions();
       break;
     case "hard":
       ROWS = 7;
       COLUMNS = 7;
       fillArray();
+      clearTimer();
       clickActions();
       break;
   }
 };
 
 const selectLevel = (value) => {
-  console.log(value)
   switch (value) {
-  case "level": 
-      swal({ 
-        title:"Nuevo Juego",
-        text:"Seleccioná una dificultad",
-        buttons:{
-          fácil:{
-            value:"easy"
+    case "level":
+      swal({
+        title: "Nuevo Juego",
+        text: "Seleccioná una dificultad",
+        buttons: {
+          fácil: {
+            value: "easy",
           },
-          normal:{
-            value: "normal"
+          normal: {
+            value: "normal",
           },
-          difícil:{
-            value:"hard"
+          difícil: {
+            value: "hard",
           },
-        }
-  })
-  .then ((value) => {
-    changeLevel(value)
-  })
+        },
+      }).then((value) => {
+        changeLevel(value);
+      });
   }
-}
-  
-    
+};
 
-//CONTROLS
-info.addEventListener("click", (e) =>{
+const welcome = () => {
   swal({
     title: "¡Bienvenida!",
     text: `En MatcheADAs tu objetivo es juntar tres o más ítems del mismo tipo ya sea en fila o columna.
@@ -134,54 +131,62 @@ info.addEventListener("click", (e) =>{
     Para eso, selecciona un ítem y a continuación un ítem adyacente para intercambiarlos de lugar. Si se forma un grupo, esos ítems se eliminarán y ganarás puntos.
 
     ¡Seguí armando grupos de 3 o más antes de que se acabe el tiempo!`,
-    buttons:{ catch: {
-      text: "¡A jugar!",
-      value: "level"} },
-  })
-  .then((value) => {
-    selectLevel(value)
-  })
-})
+    buttons: {
+      catch: {
+        text: "¡A jugar!",
+        value: "level",
+      },
+    },
+  }).then((value) => {
+    selectLevel(value);
+  });
+};
+
+//CONTROLS
+info.addEventListener("click", (e) => {
+  welcome();
+});
 const clickActions = () => {
-  timer()
+  timer();
   arrayPoints = [];
   points.innerText = `Puntaje: 0`;
   arrayCombos = [];
-  combo.innerText = `Combo x1`
-}
-redo.addEventListener("click", (e) =>{
+  combo.innerText = `Combo x1`;
+};
+redo.addEventListener("click", (e) => {
   swal({
     title: "¿Reiniciar juego?",
     text: "¡Perderás todo tu puntaje acumulado!",
-    buttons:{ 
-      cancel:true,
+    buttons: {
+      cancel: true,
       confirm: {
-      text: "Nuevo juego",
-      value: "level"} },
-  })
-  .then ((value) => {
-    selectLevel(value)
-  })
-})
+        text: "Nuevo juego",
+        value: "level",
+      },
+    },
+  }).then((value) => {
+    selectLevel(value);
+  });
+});
 
 //PUNTAJES
 const countScore = () => {
-  if(elementsToDelete.length > 0){
-    for(let i = 0; i < elementsToDelete.length; i++){
+  if (elementsToDelete.length > 0) {
+    for (let i = 0; i < elementsToDelete.length; i++) {
       arrayPoints.push(elementsToDelete[i]);
-      points.innerText = `Puntos: ${(arrayPoints.length * 200)}`
-      combo.innerText = `Combo x${(arrayCombos.length)}`
+      points.innerText = `Puntos: ${arrayPoints.length * 200}`;
+      combo.innerText = `Combo x${arrayCombos.length}`;
     }
-    arrayCombos = []
+    arrayCombos = [];
   }
-}
+};
 
 //UPDATE COLUMNS
 const updateColumns = () => {
   for (let columna = gridElements.length - 1; columna >= 0; columna--) {
     for (let fila = gridElements.length - 1; fila >= 0; fila--) {
       if (gridElements[fila][columna] === "") {
-        if ((fila - 1) < 0) {
+        if (fila - 1 < 0) {
           renderGrid();
         } else {
           for (let i = fila - 1; i >= 0; i--) {
@@ -200,13 +205,12 @@ const updateColumns = () => {
 //DELETE ELEMENTS
 const deleteElements = (elements) => {
   for (let i = 0; i < elements.length; i++) {
-    gridElements[elements[i][0]][elements[i][1]] = "";  
+    gridElements[elements[i][0]][elements[i][1]] = "";
   }
   countScore();
-  elementsToDelete = [];  
-  updateColumns();  
+  elementsToDelete = [];
+  updateColumns();
 };
-
 
 //******MATCH ELEMENTS******/
 const matchElements = () => {
@@ -215,7 +219,7 @@ const matchElements = () => {
       //ROWS
       if (
         j < gridElements.length - 2 &&
-        gridElements[i][j] !== '' &&
+        gridElements[i][j] !== "" &&
         gridElements[i][j] === gridElements[i][j + 1] &&
         gridElements[i][j] === gridElements[i][j + 2]
       ) {
@@ -224,7 +228,6 @@ const matchElements = () => {
         for (let w = j; w < gridElements.length; w++) {
           if (gridElements[i][w] === dato) {
             elementsToDelete.push([i, w, gridElements[i][j]]);
-
           } else {
             break;
           }
@@ -233,7 +236,7 @@ const matchElements = () => {
       //COLUMNS
       if (
         j < gridElements.length - 2 &&
-        gridElements[j][i] !== '' &&
+        gridElements[j][i] !== "" &&
         gridElements[j][i] === gridElements[j + 1][i] &&
         gridElements[j][i] === gridElements[j + 2][i]
       ) {
@@ -250,7 +253,7 @@ const matchElements = () => {
     }
   }
   // setTimeout(() => {
-    deleteElements(elementsToDelete);
+  deleteElements(elementsToDelete);
   // }, 2000)
 };
 
@@ -274,7 +277,12 @@ const clickFruit = (column, row, fruit) => {
         (-1 <= differenceX && differenceX <= 1 && differenceY === 0) ||
         (differenceX === 0 && -1 <= differenceY && differenceY <= 1)
       ) {
-        switchElements(element[0][1], element[0][2], element[1][1], element[1][2]);
+        switchElements(
+          element[0][1],
+          element[0][2],
+          element[1][1],
+          element[1][2]
+        );
         matchElements();
       } else {
         element.shift();
@@ -289,14 +297,14 @@ const createElement = (column, row, fruit, CELL_SIZE) => {
   const div = document.createElement("div");
   div.style.width = `${CELL_SIZE}px`;
   div.style.height = `${CELL_SIZE}px`;
-  div.style.display = 'flex';
-  div.style.justifyContent = 'center';
-  div.style.alignItems = 'center';
+  div.style.display = "flex";
+  div.style.justifyContent = "center";
+  div.style.alignItems = "center";
   div.setAttribute("data-y", column);
   div.setAttribute("data-x", row);
   let span = document.createElement("span");
-  span.style.fontSize= '22px'
-  span.style.cursor= 'pointer';
+  span.style.fontSize = "22px";
+  span.style.cursor = "pointer";
   let texto = document.createTextNode(fruit);
   div.setAttribute("data-icon", fruit);
   span.appendChild(texto);
@@ -307,11 +315,11 @@ const createElement = (column, row, fruit, CELL_SIZE) => {
 //RENDER GRID
 const renderGrid = () => {
   container.innerHTML = "";
-  const CELL_SIZE = WIDTH_GRID / ROWS-2;
+  const CELL_SIZE = WIDTH_GRID / ROWS - 2;
   container.style.width = `${WIDTH_GRID}px`;
   for (let y = 0; y < gridElements.length; y++) {
     for (let x = 0; x < gridElements.length; x++) {
-      if (gridElements[y][x] === '') {
+      if (gridElements[y][x] === "") {
         let random = Math.floor(Math.random() * arrayElements.length);
         gridElements[y][x] = arrayElements[random];
       }
@@ -319,14 +327,23 @@ const renderGrid = () => {
       container.appendChild(div);
       div.addEventListener("click", () => {
         clickFruit(y, x, gridElements[y][x]);
-        div.style.border = '1px solid black'
+        div.style.border = "1px solid #ffffff50";
+        div.style.borderRadius = "5px";
+      });
+      div.addEventListener("mouseover", () => {
+        div.style.transition = "0.3s";
+        div.style.backgroundColor = "#ffffff30";
+      });
+      div.addEventListener("mouseout", () => {
+        div.style.transition = "0.3s";
+        div.style.backgroundColor = "transparent";
       });
     }
-  };
+  }
   matchElements();
   setTimeout(() => {
-  combo.innerText = `Combo x1`
-  }, 2000)
+    combo.innerText = `Combo x1`;
+  }, 2000);
 };
 //FILL ARRAY
 const fillArray = () => {
@@ -343,4 +360,4 @@ const fillArray = () => {
   renderGrid();
 };
 
-
+welcome();
