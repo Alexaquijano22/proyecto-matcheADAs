@@ -48,8 +48,16 @@ const sign = () => {
 
   
 }
+const showTime = () =>{
+  if (sec<10){
+    time.innerHTML = (`00:0${sec--}`);
+  }
+  else{
+    time.innerHTML = (`00:${sec--}`);
+  }
+}
 const counter = () => {
-  time.innerHTML = (`00: ${sec--}`);
+  showTime()
   if (sec <= -1) {
     clearInterval(interval);
     time.innerHTML = ""
@@ -122,7 +130,7 @@ info.addEventListener("click", (e) =>{
   swal({
     title: "¡Bienvenida!",
     text: `En MatcheADAs tu objetivo es juntar tres o más ítems del mismo tipo ya sea en fila o columna.
-    
+
     Para eso, selecciona un ítem y a continuación un ítem adyacente para intercambiarlos de lugar. Si se forma un grupo, esos ítems se eliminarán y ganarás puntos.
 
     ¡Seguí armando grupos de 3 o más antes de que se acabe el tiempo!`,
@@ -288,6 +296,7 @@ const createElement = (column, row, fruit, CELL_SIZE) => {
   div.setAttribute("data-x", row);
   let span = document.createElement("span");
   span.style.fontSize= '22px'
+  span.style.cursor= 'pointer';
   let texto = document.createTextNode(fruit);
   div.setAttribute("data-icon", fruit);
   span.appendChild(texto);
