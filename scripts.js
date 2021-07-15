@@ -24,6 +24,7 @@ let elementsToDelete = [];
 let interval;
 let arrayPoints = [];
 let arrayCombos = [];
+let stopTime;
 
 //TIMER
 let sec;
@@ -48,9 +49,9 @@ const sign = () => {
 };
 const showTime = () => {
   if (sec < 10) {
-    time.innerHTML = `00:0${sec--}`;
+    time.innerHTML = `00:0${sec}`;
   }else{
-    time.innerHTML = `00:${sec--}`;
+    time.innerHTML = `00:${sec}`;
   }
 };
 
@@ -58,17 +59,24 @@ const clearTimer = () => {
   clearInterval(interval);
 }
 
+const stopTimer = () => {
+  stopTime = true
+}
+
 const counter = () => {
   showTime();
-  console.log(sec);
-  if (sec === -1) {
+  if (sec <= -1) {
     clearTimer();  
     time.innerHTML = "";
     sign();
   }
+  if(!stopTime){
+    sec--;
+  }
+
 };
 const timer = () => {
-  sec = 10;
+  sec = 30;
   interval = setInterval(counter, 1000);
 };
 
@@ -80,12 +88,14 @@ const changeLevel = (option) => {
       ROWS = 9;
       COLUMNS = 9;
       fillArray();
+      stopTime = false;
       clearTimer();
       clickActions();
       break;
     case "normal":
       ROWS = 8;
       COLUMNS = 8;
+      stopTime = false;
       fillArray();
       clearTimer();
       clickActions();
@@ -93,6 +103,7 @@ const changeLevel = (option) => {
     case "hard":
       ROWS = 7;
       COLUMNS = 7;
+      stopTime = false;
       fillArray();
       clearTimer();
       clickActions();
@@ -103,7 +114,7 @@ const changeLevel = (option) => {
 const selectLevel = (value) => {
   switch (value) {
     case "level":
-      swal({
+    swal({
         title: "Nuevo Juego",
         text: "Seleccioná una dificultad",
         buttons: {
@@ -120,6 +131,12 @@ const selectLevel = (value) => {
       }).then((value) => {
         changeLevel(value);
       });
+    break;
+
+    case "cancelar": 
+      console.log('cancelar');
+      stopTime = false;
+    break
   }
 };
 
@@ -153,20 +170,25 @@ const clickActions = () => {
   arrayCombos = [];
   combo.innerText = `Combo x1`;
 };
+
 redo.addEventListener("click", (e) => {
   swal({
     title: "¿Reiniciar juego?",
     text: "¡Perderás todo tu puntaje acumulado!",
     buttons: {
-      cancel: true,
+      cancelar: {
+        value: "cancelar",
+      },
       confirm: {
         text: "Nuevo juego",
         value: "level",
       },
     },
   }).then((value) => {
+    
     selectLevel(value);
   });
+  stopTimer();
 });
 
 //PUNTAJES
