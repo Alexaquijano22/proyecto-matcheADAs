@@ -16,7 +16,7 @@ const combo = document.getElementById('combo');
 
 let ROWS = 7;
 let COLUMNS = 7;
-const WIDTH_GRID = 400;
+let WIDTH_GRID = 400;
 const arrayElements = ["🍎", "🍋", "🍇", "🍉", "🍌", "🍒"];
 let element = [];
 let gridElements = [];
@@ -25,6 +25,14 @@ let interval;
 let arrayPoints = [];
 let arrayCombos = [];
 
+//MEDIA QUERY
+const mediaQuery = window.matchMedia('(max-width: 600px)')
+if (mediaQuery.matches){
+  WIDTH_GRID = 350
+}
+else{
+  WIDTH_GRID = 400
+}
 //TIMER
 let sec = 30
 
