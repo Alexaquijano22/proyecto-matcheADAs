@@ -25,6 +25,7 @@ const deleteElements = (elements) => {
         gridElements[elements[i][0]][elements[i][1]] = "";
     }
     countScore();
+    
     elementsToDelete = [];
     updateColumns();
 };
@@ -72,6 +73,7 @@ const matchElements = () => {
     setTimeout(() => {
         deleteElements(elementsToDelete);
     }, 500)
+    
 };
 
 //SWITCH ELEMENTS
@@ -101,6 +103,9 @@ const clickFruit = (column, row, fruit) => {
                     element[1][2]
                 );
                 matchElements();
+                if(elementsToDelete.length > 0){
+                    renderGrid();
+                }
             } else {
                 element.shift();
             }
@@ -120,7 +125,7 @@ const createElement = (column, row, fruit, CELL_SIZE) => {
     div.setAttribute("data-y", column);
     div.setAttribute("data-x", row);
     let span = document.createElement("span");
-    span.style.fontSize = "22px";
+    span.style.fontSize = "28px";
     span.style.cursor = "pointer";
     let texto = document.createTextNode(fruit);
     div.setAttribute("data-icon", fruit);
@@ -132,7 +137,7 @@ const createElement = (column, row, fruit, CELL_SIZE) => {
 //RENDER GRID
 const renderGrid = () => {
     container.innerHTML = "";
-    const CELL_SIZE = WIDTH_GRID / ROWS - 2;
+    const CELL_SIZE = WIDTH_GRID / ROWS;
     container.style.width = `${WIDTH_GRID}px`;
     for (let y = 0; y < gridElements.length; y++) {
         for (let x = 0; x < gridElements.length; x++) {
@@ -144,12 +149,15 @@ const renderGrid = () => {
             container.appendChild(div);
             div.addEventListener("click", () => {
                 clickFruit(y, x, gridElements[y][x]);
-                div.style.border = "1px solid #ffffff50";
+                div.style.backgroundColor = "#ffffff30";
                 div.style.borderRadius = "5px";
+                div.style.transitionDuration = "0.3s";
+                div.style.transform = "scale(1.1)"
             });
             div.addEventListener("mouseover", () => {
                 div.style.transition = "0.3s";
                 div.style.backgroundColor = "#ffffff30";
+                div.style.borderRadius = "5px";
             });
             div.addEventListener("mouseout", () => {
                 div.style.transition = "0.3s";
@@ -157,8 +165,8 @@ const renderGrid = () => {
             });
         }
     }
-    matchElements();
     setTimeout(() => {
         combo.innerText = `Combo x1`;
     }, 2000);
+    matchElements();
 };
