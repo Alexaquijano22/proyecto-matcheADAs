@@ -1,6 +1,7 @@
 //CONTROLS
 info.addEventListener("click", (e) => {
     welcome();
+    stopTimer();
 });
 const clickActions = () => {
     timer();
@@ -35,7 +36,7 @@ const countScore = () => {
     if (elementsToDelete.length > 0) {
         for (let i = 0; i < elementsToDelete.length; i++) {
             arrayPoints.push(elementsToDelete[i]);
-            points.innerText = `Puntos: ${arrayPoints.length * 200}`;
+            points.innerText = `Puntos: ${arrayPoints.length * 100}`;
             combo.innerText = `Combo x${arrayCombos.length}`;
         }
         arrayCombos = [];

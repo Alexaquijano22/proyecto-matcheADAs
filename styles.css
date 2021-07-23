@@ -17,9 +17,9 @@ p{
 }
 .container{
     background: rgb(0 0 0 / 73%);
-    /* position: relative; */
     display: flex;
     flex-wrap: wrap;
+    padding: 0.5em;
 }
 .control{
     width: 500px;

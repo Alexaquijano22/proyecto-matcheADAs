@@ -6,7 +6,7 @@ const sign = () => {
     span.appendChild(texto);
     swal({
         title: "Juego terminado",
-        text: `Puntaje final: ${arrayPoints.length * 200}`,
+        text: `Puntaje final: ${arrayPoints.length * 100}`,
         buttons: {
             confirm: {
                 text: "Nuevo juego",
